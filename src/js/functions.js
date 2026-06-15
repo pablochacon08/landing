@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * Obtiene productos desde una URL en formato JSON.
@@ -8,9 +8,9 @@
  *
  * @function fetchProducts
  * @param {string} url - URL desde donde se obtendrán los productos.
- * @returns {Promise<{success: boolean, body: Object|string}>} Promesa con el resultado de la petición.
+ * @returns {Promise<{success: boolean, body: Array|Object|string}>} Promesa con el resultado de la petición.
  */
-let fetchProducts = (url) => {
+const fetchProducts = (url) => {
     return fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -45,7 +45,7 @@ let fetchProducts = (url) => {
  * @param {string} url - URL desde donde se obtendrán las categorías en formato XML.
  * @returns {Promise<{success: boolean, body: Document|string}>} Promesa con el resultado de la petición.
  */
-let fetchCategories = async (url) => {
+const fetchCategories = async (url) => {
     try {
         const response = await fetch(url);
 
@@ -53,16 +53,14 @@ let fetchCategories = async (url) => {
             throw new Error(`Error HTTP: ${response.status}`);
         }
 
-        let text = await response.text();
-
+        const text = await response.text();
         const parser = new DOMParser();
-        const data = parser.parseFromString(text, 'application/xml');
+        const data = parser.parseFromString(text, "application/xml");
 
         return {
             success: true,
             body: data
         };
-
     } catch (error) {
         return {
             success: false,
@@ -71,4 +69,4 @@ let fetchCategories = async (url) => {
     }
 };
 
-export { fetchCategories, fetchProducts };
+export { fetchProducts, fetchCategories };
