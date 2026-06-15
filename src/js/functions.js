@@ -45,7 +45,7 @@ const fetchProducts = (url) => {
  * @param {string} url - URL desde donde se obtendrán las categorías en formato XML.
  * @returns {Promise<{success: boolean, body: Document|string}>} Promesa con el resultado de la petición.
  */
-const fetchCategories = async (url) => {
+let fetchCategories = async (url) => {
     try {
         const response = await fetch(url);
 
