@@ -88,7 +88,7 @@ const renderProducts = () => {
  * @function renderCategories
  * @returns {Promise<void>} No retorna ningún valor.
  */
-const renderCategories = async () => {
+let renderCategories = async () => {
     try {
         const result = await fetchCategories("https://data-dawm.github.io/datum/reseller/categories.xml");
 
