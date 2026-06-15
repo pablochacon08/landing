@@ -90,10 +90,10 @@ const renderProducts = () => {
  */
 let renderCategories = async () => {
     try {
-        const result = await fetchCategories("https://data-dawm.github.io/datum/reseller/categories.xml");
+        let result = await fetchCategories("https://data-dawm.github.io/datum/reseller/categories.xml");
 
         if (result.success) {
-            const container = document.getElementById("categories");
+            let container = document.getElementById("categories");
 
             if (!container) {
                 return;
@@ -101,14 +101,17 @@ let renderCategories = async () => {
 
             container.innerHTML = `<option selected disabled>Seleccione una categoría</option>`;
 
-            const categoriesXML = result.body;
-            const categories = categoriesXML.getElementsByTagName("category");
+            let categoriesXML = result.body;
+            let categories = categoriesXML.getElementsByTagName("category");
 
-            for (const category of categories) {
-                const id = category.getElementsByTagName("id")[0].textContent;
-                const name = category.getElementsByTagName("name")[0].textContent;
+            for (let category of categories) {
+                let id = category.getElementsByTagName("id")[0].textContent;
+                let name = category.getElementsByTagName("name")[0].textContent;
 
-                const categoryHTML = `<option value="${id}">${name}</option>`;
+                let categoryHTML = `<option value="[ID]">[NAME]</option>`;
+
+                categoryHTML = categoryHTML.replaceAll("[ID]", id);
+                categoryHTML = categoryHTML.replaceAll("[NAME]", name);
 
                 container.innerHTML += categoryHTML;
             }
