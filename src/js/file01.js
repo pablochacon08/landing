@@ -1,6 +1,7 @@
 "use strict";
 
 import { fetchProducts, fetchCategories } from "./functions.js";
+import { saveVote } from "../../javascript js/firebase.js";
 
 /**
  * Carga y renderiza los productos dentro del contenedor principal.
@@ -12,6 +13,37 @@ import { fetchProducts, fetchCategories } from "./functions.js";
  * @function renderProducts
  * @returns {void} No retorna ningún valor.
  */
+
+/**
+ * Habilita el formulario de votación.
+ *
+ * Obtiene el formulario con id "form_voting", captura el evento submit,
+ * evita el comportamiento por defecto, obtiene el producto seleccionado
+ * y guarda el voto en Firebase usando la función saveVote.
+ *
+ * @function enableForm
+ * @returns {void} No retorna ningún valor.
+ */
+const enableForm = () => {
+    const form = document.getElementById("form_voting");
+
+    if (!form) {
+        return;
+    }
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const selectProduct = document.getElementById("select_product");
+        const productID = selectProduct.value;
+
+        saveVote(productID)
+            .then((result) => {
+                alert(result.message);
+            });
+    });
+};
+
 const renderProducts = () => {
     fetchProducts("https://data-dawm.github.io/datum/reseller/products.json")
         .then(result => {
@@ -173,4 +205,5 @@ const showVideo = () => {
     showVideo();
     renderProducts();
     renderCategories();
+    enableForm();
 })();
