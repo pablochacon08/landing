@@ -1,32 +1,51 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DevBridge — Programa de Aceleración de Talento Software</title>
+  
   <script src="https://cdn.tailwindcss.com"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
 
+  <style>
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(26px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes softPulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: .45; }
+    }
+    
+    .reveal { opacity: 0; transform: translateY(26px); }
+    .reveal.is-visible { animation: fadeUp .7s cubic-bezier(.22,.61,.36,1) forwards; }
+    .pulse-dot { animation: softPulse 2.2s ease-in-out infinite; }
+    .animate-float { animation: float 4s ease-in-out infinite; }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #F5F7FA; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
+
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Outfit', 'sans-serif'],
-            serif: ['Lora', 'serif'],
-          },
+          fontFamily: { sans: ['Outfit', 'sans-serif'], serif: ['Lora', 'serif'] },
           colors: {
-            navy:   '#0B1F3A',
-            brand:  { DEFAULT: '#0057B8', light: '#1A6FD4' },
-            teal:   '#00A89D',
-            gold:   '#C9A84C',
-            lightbg:'#F5F7FA',
-            muted:  '#64748B',
-            ink:    '#1A2637',
-            line:   '#E2E8F0',
+            navy: '#0B1F3A', brand: { DEFAULT: '#0057B8', light: '#1A6FD4' },
+            teal: '#00A89D', gold: '#C9A84C', lightbg: '#F5F7FA',
+            muted: '#64748B', ink: '#1A2637', line: '#E2E8F0',
           },
           maxWidth: { layout: '1340px' },
         },
@@ -35,539 +54,216 @@
   </script>
 </head>
 
-<body class="font-sans text-ink bg-white overflow-x-hidden">
+<body class="font-sans text-ink bg-white antialiased overflow-x-hidden">
 
-  <!-- NAV -->
-  <nav id="nav" class="sticky top-0 z-50 bg-white border-b border-line h-[68px] px-5 md:px-8 flex items-center justify-between transition-shadow">
-    <div class="text-[22px] font-extrabold text-navy tracking-tight">Dev<span class="text-brand">Bridge</span></div>
-    <div class="flex items-center">
-      <div class="hidden md:flex">
-        <a href="#brecha" class="text-[13.5px] font-medium text-muted ml-7 hover:text-brand transition-colors">El Programa</a>
-        <a href="#stack" class="text-[13.5px] font-medium text-muted ml-7 hover:text-brand transition-colors">Stack</a>
-        <a href="#programas" class="text-[13.5px] font-medium text-muted ml-7 hover:text-brand transition-colors">Programas</a>
-        <a href="#proceso" class="text-[13.5px] font-medium text-muted ml-7 hover:text-brand transition-colors">Proceso</a>
+  <nav id="nav" class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-line transition-shadow">
+    <div class="max-w-layout mx-auto h-[72px] px-6 lg:px-8 flex items-center justify-between">
+      <a href="#" class="text-[21px] font-extrabold text-navy tracking-tight">Dev<span class="text-brand">Bridge</span></a>
+
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#brecha" class="text-[13.5px] font-medium text-muted hover:text-brand transition-colors">La Brecha</a>
+        <a href="#stack" class="text-[13.5px] font-medium text-muted hover:text-brand transition-colors">El Stack</a>
+        <a href="#proceso" class="text-[13.5px] font-medium text-muted hover:text-brand transition-colors">El Proceso</a>
+        <a href="#red-egresados" class="text-[13.5px] font-medium text-muted hover:text-brand transition-colors">Egresados</a>
       </div>
-      <a href="#aplicar" class="ml-7 inline-flex items-center gap-1.5 bg-brand hover:bg-brand-light hover:-translate-y-px text-white text-[13px] font-semibold px-5 py-2.5 rounded-md transition">
+
+      <a href="#aplicar" class="inline-flex items-center gap-1.5 bg-brand hover:bg-brand-light text-white text-[13px] font-semibold px-5 py-2.5 rounded-full transition hover:-translate-y-px shadow-sm hover:shadow-md">
         Solicita información
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
   </nav>
 
-  <!-- MAIN LAYOUT -->
+  <header class="relative isolate overflow-hidden bg-navy">
+    <div class="absolute inset-0 -z-10">
+      <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1920&q=80"
+           alt="Desarrollador trabajando en su laptop"
+           class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-navy/60"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-navy/30 via-transparent to-navy/70"></div>
+    </div>
+
+    <div class="max-w-layout mx-auto px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32">
+      <div class="reveal inline-flex items-center gap-2 bg-black/30 border border-white/15 text-white/95 text-[11.5px] font-semibold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-6 backdrop-blur-sm shadow-inner">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></span>
+        Cohorte 2025 · Plazas limitadas
+      </div>
+
+      <h1 class="reveal font-extrabold text-white leading-[1.1] tracking-tight max-w-2xl mb-5 text-[34px] sm:text-[44px] lg:text-[54px] [text-shadow:0_2px_4px_rgba(0,0,0,0.3)]">
+        Eleva tu carrera técnica a estándares de <span class="text-emerald-300">nivel senior</span>
+      </h1>
+
+      <p class="reveal text-[16.5px] text-white max-w-lg leading-relaxed mb-9 font-light [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
+        Cerramos la brecha entre la universidad y el trabajo real: proyectos en producción, mentoría 1:1 y el stack que las empresas exigen hoy.
+      </p>
+
+      <div class="reveal flex flex-wrap gap-3">
+        <a href="#aplicar" class="inline-flex items-center gap-2 bg-brand hover:bg-brand-light text-white font-semibold text-sm px-7 py-3.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition">
+          Aplicar al programa
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#brecha" class="inline-flex items-center gap-1.5 bg-white/10 hover:bg-white/15 border border-white/25 text-white font-medium text-sm px-6 py-3.5 rounded-full backdrop-blur-sm transition">
+          Ver cómo funciona
+        </a>
+      </div>
+
+      <div class="reveal flex flex-wrap items-center gap-x-7 gap-y-3 mt-12 pt-7 border-t border-white/15 text-[12.5px] text-white font-medium [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
+        <span class="flex items-center gap-2"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>100% Remoto</span>
+        <span class="flex items-center gap-2"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>16 semanas</span>
+        <span class="flex items-center gap-2"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Mentoría 1:1</span>
+        <span class="flex items-center gap-2"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>87% inserción en 60 días</span>
+      </div>
+    </div>
+  </header>
+
   <div class="max-w-layout mx-auto grid grid-cols-1 lg:grid-cols-[1fr_360px]">
 
-    <!-- MAIN CONTENT -->
     <main>
-      <!-- HERO -->
-      <section class="relative overflow-hidden bg-navy h-auto min-h-[380px] lg:h-[440px]">
-        <div class="absolute inset-0" style="background: radial-gradient(ellipse 70% 90% at 65% 50%, rgba(26,111,212,.25) 0%, transparent 70%), linear-gradient(135deg,#071325 0%,#0B2545 40%,#0D3B6E 100%);"></div>
-        <div class="absolute inset-0 opacity-100" style="background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:48px 48px;"></div>
-
-        <div class="hidden lg:flex absolute right-[8%] top-1/2 -translate-y-1/2 flex-col gap-2.5 opacity-20 font-mono text-[12px] text-sky-300 whitespace-nowrap">
-          <span>$ docker build -t devbridge/app .</span>
-          <span>$ kubectl apply -f deployment.yaml</span>
-          <span>✓ Pipeline passed · 3 checks</span>
-          <span>$ aws s3 sync ./dist s3://prod-bucket</span>
-          <span>🚀 Deployed to production</span>
-        </div>
-
-        <div class="relative z-10 px-6 lg:px-13 py-10 lg:py-15 h-full flex flex-col justify-center">
-          <div class="reveal inline-flex w-fit items-center gap-2 bg-white/10 border border-white/15 text-white/85 text-[11.5px] font-semibold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-5 backdrop-blur-sm">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            Cohorte 2025 · Plazas limitadas
-          </div>
-
-          <h1 class="reveal font-extrabold text-white leading-[1.12] tracking-tight max-w-[560px] mb-4 text-[28px] sm:text-[36px] lg:text-[44px]">
-            Eleva tu carrera técnica<br />
-            a <em class="not-italic text-sky-300">estándares de nivel senior</em>
-          </h1>
-
-          <p class="reveal text-[15.5px] text-white/70 max-w-[480px] leading-relaxed mb-8 font-light">
-            Cerramos la brecha entre la universidad y el trabajo real. Aprende haciendo: proyectos en producción, mentoría 1:1 y el stack que las empresas exigen hoy.
-          </p>
-
-          <div class="reveal flex flex-wrap gap-3 items-center">
-            <a href="#aplicar" class="inline-flex items-center gap-2 bg-brand hover:bg-brand-light hover:-translate-y-0.5 text-white font-bold text-sm px-7 py-3.5 rounded-md shadow-[0_4px_18px_rgba(0,87,184,.4)] hover:shadow-[0_8px_28px_rgba(0,87,184,.5)] transition">
-              Aplicar al programa
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-            <a href="#brecha" class="inline-flex items-center gap-1.5 bg-white/10 hover:bg-white/15 border border-white/20 hover:border-white/35 text-white/85 font-medium text-sm px-6 py-3 rounded-md backdrop-blur-sm transition">Ver cómo funciona</a>
-          </div>
-
-          <div class="reveal flex flex-wrap items-center gap-5 mt-9 pt-7 border-t border-white/10">
-            <div class="flex items-center gap-2 text-xs text-white/60"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" class="opacity-70 shrink-0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>100% Remoto</div>
-            <div class="flex items-center gap-2 text-xs text-white/60"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" class="opacity-70 shrink-0"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>16 semanas intensivas</div>
-            <div class="flex items-center gap-2 text-xs text-white/60"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" class="opacity-70 shrink-0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Mentoría 1:1 semanal</div>
-            <div class="flex items-center gap-2 text-xs text-white/60"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" class="opacity-70 shrink-0"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>87% inserción en 60 días</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- INTRO -->
-      <section class="px-6 lg:px-13 py-12 lg:py-16 border-b border-line" id="intro">
-        <div class="reveal">
-          <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-2.5">¿Por qué DevBridge?</div>
-          <h2 class="text-2xl lg:text-[32px] font-extrabold text-navy tracking-tight leading-tight mb-4">Conviértete en uno de los perfiles<br/>más demandados por el sector IT</h2>
-          <p class="text-[15.5px] text-muted leading-relaxed max-w-[620px] font-light">
-            La formación técnica tradicional cubre los fundamentos pero deja un vacío enorme frente a las exigencias reales del mercado. DevBridge es el puente que cierra esa brecha, con metodología práctica y orientada a resultados desde el primer día.
-          </p>
-        </div>
-
-        <div class="reveal bg-lightbg border-l-4 border-brand rounded-r-lg px-6 py-5 my-7">
-          <p class="text-[15px] leading-relaxed">Se espera que el mercado global de <strong class="text-navy">cloud computing</strong> alcance los <strong class="text-navy">791.000 millones de dólares en 2028</strong>. Esto abre el camino para nuevas profesiones altamente remuneradas. <em>Fuente: Fortune Business Insights.</em></p>
-        </div>
-
-        <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-px bg-line border border-line rounded-xl overflow-hidden mt-9">
-          <div class="bg-white p-8 text-center"><span class="block text-[42px] font-extrabold text-gold leading-none tracking-tight mb-2">+50%</span><span class="text-[13px] text-muted leading-snug">implantación empresarial<br/>en España en 2027</span></div>
-          <div class="bg-white p-8 text-center"><span class="block text-[42px] font-extrabold text-gold leading-none tracking-tight mb-2">+76%</span><span class="text-[13px] text-muted leading-snug">implantación empresarial<br/>a nivel mundial para 2027</span></div>
-          <div class="bg-white p-8 text-center"><span class="block text-[42px] font-extrabold text-gold leading-none tracking-tight mb-2">+22%</span><span class="text-[13px] text-muted leading-snug">de inversión estimada<br/>hasta 2026</span></div>
-        </div>
-      </section>
-
-      <!-- LA BRECHA -->
-      <section class="px-6 lg:px-13 py-12 lg:py-16 border-b border-line" id="brecha">
-        <div class="reveal">
-          <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-2.5">El problema real</div>
-          <h2 class="text-2xl lg:text-[32px] font-extrabold text-navy tracking-tight leading-tight mb-4">Una disciplina en constante crecimiento<br/>que la academia no alcanza a cubrir</h2>
-          <p class="text-[15.5px] text-muted leading-relaxed max-w-[620px] font-light">La inversión en tecnología cloud y su implantación empresarial aumentan cada año. Sin la formación adecuada, los developers recién egresados quedan fuera de las oportunidades mejor remuneradas.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          <!-- Tradicional -->
-          <div class="reveal border border-line rounded-xl overflow-hidden">
-            <div class="px-5 py-4 text-sm font-bold flex items-center gap-2.5 bg-red-50 text-red-700">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-              Formación Tradicional
-            </div>
-            <div class="p-5">
-              <div class="flex items-start gap-3 py-2.5 text-[13.5px]"><svg class="shrink-0 mt-0.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>Algoritmos sin contexto productivo</div>
-              <div class="flex items-start gap-3 py-2.5 text-[13.5px] border-t border-line"><svg class="shrink-0 mt-0.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>Sin exposición a cloud real ni CI/CD</div>
-              <div class="flex items-start gap-3 py-2.5 text-[13.5px] border-t border-line"><svg class="shrink-0 mt-0.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>Portfolio de proyectos locales sin usuarios</div>
-              <div class="flex items-start gap-3 py-2.5 text-[13.5px] border-t border-line"><svg class="shrink-0 mt-0.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>Sin mentoría de profesionales en activo</div>
-
-              <div class="mt-5">
-                <div class="flex justify-between text-xs text-muted mb-1.5"><span>Preparación laboral</span><span class="text-red-500">28%</span></div>
-                <div class="h-1.5 bg-line rounded-full overflow-hidden"><div class="h-full bg-red-500 rounded-full transition-[width] duration-1000" style="width:28%"></div></div>
-              </div>
-              <div class="mt-5">
-                <div class="flex justify-between text-xs text-muted mb-1.5"><span>Stack moderno</span><span class="text-red-500">15%</span></div>
-                <div class="h-1.5 bg-line rounded-full overflow-hidden"><div class="h-full bg-red-500 rounded-full transition-[width] duration-1000" style="width:15%"></div></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- DevBridge -->
-          <div class="reveal border border-line rounded-xl overflow-hidden">
-            <div class="px-5 py-4 text-sm font-bold flex items-center gap-2.5 bg-blue-50 text-brand">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
-              Metodología DevBridge
-            </div>
-            <div class="p-5">
-              <div class="flex items-start gap-3 py-2.5 text-[13.5px]"><svg class="shrink-0 mt-0.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0057B8" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>Proyectos reales en AWS desde la semana 3</div>
-              <div class="flex items-start gap-3 py-2.5 text-[13.5px] border-t border-line"><svg class="shrink-0 mt-0.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0057B8" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>CI/CD, Docker y arquitectura en producción</div>
-              <div class="flex items-start gap-3 py-2.5 text-[13.5px] border-t border-line"><svg class="shrink-0 mt-0.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0057B8" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>Portfolio con métricas reales y URL pública</div>
-              <div class="flex items-start gap-3 py-2.5 text-[13.5px] border-t border-line"><svg class="shrink-0 mt-0.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0057B8" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>Mentoría 1:1 con engineers de industria real</div>
-
-              <div class="mt-5">
-                <div class="flex justify-between text-xs text-muted mb-1.5"><span>Preparación laboral</span><span class="text-brand">94%</span></div>
-                <div class="h-1.5 bg-line rounded-full overflow-hidden"><div class="h-full rounded-full transition-[width] duration-1000" style="width:94%;background:linear-gradient(90deg,#0057B8,#00A89D)"></div></div>
-              </div>
-              <div class="mt-5">
-                <div class="flex justify-between text-xs text-muted mb-1.5"><span>Stack moderno</span><span class="text-brand">98%</span></div>
-                <div class="h-1.5 bg-line rounded-full overflow-hidden"><div class="h-full rounded-full transition-[width] duration-1000" style="width:98%;background:linear-gradient(90deg,#0057B8,#00A89D)"></div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PROGRAMAS -->
-      <section class="px-6 lg:px-13 py-12 lg:py-16 bg-lightbg border-b border-line" id="programas">
-        <div class="reveal">
-          <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-2.5">Elige tu ruta</div>
-          <h2 class="text-2xl lg:text-[32px] font-extrabold text-navy tracking-tight leading-tight mb-4">Elige el programa DevBridge<br/>que mejor se ajuste a tus objetivos</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          <div class="reveal bg-white border border-line rounded-xl overflow-hidden hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,87,184,.12)] transition">
-            <div class="h-44 relative overflow-hidden" style="background:linear-gradient(135deg,#0B2545 0%,#1A6FD4 50%,#00A89D 100%);">
-              <div class="absolute inset-0 flex items-center justify-center opacity-10">
-                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".6"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-              </div>
-              <span class="absolute bottom-4 left-5 bg-white/15 backdrop-blur-sm border border-white/20 text-white text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Nivel inicial–medio</span>
-            </div>
-            <div class="p-6">
-              <h3 class="text-[17px] font-bold text-navy mb-2.5 tracking-tight">Programa en Cloud Computing</h3>
-              <p class="text-[13.5px] text-muted leading-relaxed mb-4">Especialízate para ofrecer con éxito los mejores <strong>servicios en la nube</strong>, conocer los nuevos entornos de trabajo en remoto y cómo implementarlos en cualquier proyecto.</p>
-              <a href="#aplicar" class="inline-flex items-center gap-1.5 bg-brand hover:bg-brand-light hover:-translate-y-px text-white text-[12.5px] font-bold uppercase tracking-wider px-5 py-2.5 rounded-md transition">
-                Más información
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </a>
-            </div>
-          </div>
-
-          <div class="reveal bg-white border border-line rounded-xl overflow-hidden hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,87,184,.12)] transition">
-            <div class="h-44 relative overflow-hidden" style="background:linear-gradient(135deg,#1A0B45 0%,#4B1FD4 50%,#0057B8 100%);">
-              <div class="absolute inset-0 flex items-center justify-center opacity-10">
-                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".6"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-              </div>
-              <span class="absolute bottom-4 left-5 bg-white/15 backdrop-blur-sm border border-white/20 text-white text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Nivel avanzado</span>
-            </div>
-            <div class="p-6">
-              <h3 class="text-[17px] font-bold text-navy mb-2.5 tracking-tight">Experto en Arquitecturas Cloud</h3>
-              <p class="text-[13.5px] text-muted leading-relaxed mb-4">Dirigido a profesionales del sector <strong>con experiencia</strong> que quieran profundizar en aspectos clave como <strong>IA aplicada a Cloud o Machine Learning</strong>. La formación que te hará subir de nivel.</p>
-              <a href="#aplicar" class="inline-flex items-center gap-1.5 bg-brand hover:bg-brand-light hover:-translate-y-px text-white text-[12.5px] font-bold uppercase tracking-wider px-5 py-2.5 rounded-md transition">
-                Más información
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- STACK -->
-      <section class="px-6 lg:px-13 py-12 lg:py-16 border-b border-line" id="stack">
-        <div class="reveal">
-          <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-2.5">Lo que vas a dominar</div>
-          <h2 class="text-2xl lg:text-[32px] font-extrabold text-navy tracking-tight leading-tight mb-4">Stack tecnológico de nivel industria</h2>
-          <p class="text-[15.5px] text-muted leading-relaxed max-w-[620px] font-light">Cada herramienta que trabajamos está activa en equipos de alto rendimiento hoy. No enseñamos tecnología por enseñar.</p>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-8">
-          <!-- Tech card template -->
-          <div class="reveal group bg-white border border-line hover:border-brand hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(0,87,184,.1)] rounded-xl p-5 text-center transition">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 bg-amber-50">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2"><path d="M3 12c4 4 14 4 18 0"/><path d="M3 12c0-5 4-9 9-9s9 4 9 9-4 9-9 9-9-4-9-9z"/></svg>
-            </div>
-            <div class="text-[13px] font-bold text-navy mb-0.5 group-hover:text-brand transition-colors">AWS &amp; Cloud</div>
-            <div class="text-[11px] text-muted">EC2, S3, Lambda, RDS</div>
-          </div>
-
-          <div class="reveal group bg-white border border-line hover:border-brand hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(0,87,184,.1)] rounded-xl p-5 text-center transition">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 bg-blue-50">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="#2496ED"><path d="M22 19h3v3h-3v-3z M2 11h3v3H2z M6 11h3v3H6z M10 11h3v3h-3z M10 7h3v3h-3z"/></svg>
-            </div>
-            <div class="text-[13px] font-bold text-navy mb-0.5 group-hover:text-brand transition-colors">Docker</div>
-            <div class="text-[11px] text-muted">Containers &amp; Compose</div>
-          </div>
-
-          <div class="reveal group bg-white border border-line hover:border-brand hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(0,87,184,.1)] rounded-xl p-5 text-center transition">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 bg-red-50">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F05032" stroke-width="2"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><path d="M6 8v8"/><path d="M8 6h8"/></svg>
-            </div>
-            <div class="text-[13px] font-bold text-navy mb-0.5 group-hover:text-brand transition-colors">CI/CD</div>
-            <div class="text-[11px] text-muted">GitHub Actions</div>
-          </div>
-
-          <div class="reveal group bg-white border border-line hover:border-brand hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(0,87,184,.1)] rounded-xl p-5 text-center transition">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 bg-cyan-50">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="#06B6D4"><path d="M12 6c-2.7 0-4.3 1.3-5 4 1-1.3 2.2-1.8 3.5-1.5.7.2 1.3.8 1.8 1.5.9 1.3 2 2.5 4 2.5 2.7 0 4.3-1.3 5-4-1 1.3-2.2 1.8-3.5 1.5-.7-.2-1.3-.8-1.8-1.5-.9-1.3-2-2.5-4-2.5zM7 14c-2.7 0-4.3 1.3-5 4 1-1.3 2.2-1.8 3.5-1.5.7.2 1.3.8 1.8 1.5.9 1.3 2 2.5 4 2.5 2.7 0 4.3-1.3 5-4-1 1.3-2.2 1.8-3.5 1.5-.7-.2-1.3-.8-1.8-1.5-.9-1.3-2-2.5-4-2.5z"/></svg>
-            </div>
-            <div class="text-[13px] font-bold text-navy mb-0.5 group-hover:text-brand transition-colors">TailwindCSS</div>
-            <div class="text-[11px] text-muted">Design systems</div>
-          </div>
-
-          <div class="reveal group bg-white border border-line hover:border-brand hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(0,87,184,.1)] rounded-xl p-5 text-center transition">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 bg-violet-50">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.8"><rect x="9" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><rect x="15" y="15" width="6" height="6" rx="1"/><path d="M12 9v3M12 12l-6 3M12 12l6 3"/></svg>
-            </div>
-            <div class="text-[13px] font-bold text-navy mb-0.5 group-hover:text-brand transition-colors">Arquitectura</div>
-            <div class="text-[11px] text-muted">Microservicios, DDD</div>
-          </div>
-        </div>
-
-        <div class="reveal flex flex-wrap gap-2 mt-5">
-          <span class="px-3.5 py-1 border border-line rounded-full text-xs text-muted bg-lightbg font-medium">PostgreSQL</span>
-          <span class="px-3.5 py-1 border border-line rounded-full text-xs text-muted bg-lightbg font-medium">Redis</span>
-          <span class="px-3.5 py-1 border border-line rounded-full text-xs text-muted bg-lightbg font-medium">Terraform</span>
-          <span class="px-3.5 py-1 border border-line rounded-full text-xs text-muted bg-lightbg font-medium">TypeScript</span>
-          <span class="px-3.5 py-1 border border-line rounded-full text-xs text-muted bg-lightbg font-medium">Node.js</span>
-          <span class="px-3.5 py-1 border border-line rounded-full text-xs text-muted bg-lightbg font-medium">Kubernetes</span>
-          <span class="px-3.5 py-1 border border-line rounded-full text-xs text-muted bg-lightbg font-medium">Monitoring</span>
-          <span class="px-3.5 py-1 border border-line rounded-full text-xs text-muted bg-lightbg font-medium">Seguridad en Cloud</span>
-        </div>
-      </section>
-
-      <!-- COMPARATIVA -->
-      <section class="px-6 lg:px-13 py-12 lg:py-16 bg-lightbg border-b border-line" id="comparativa">
-        <div class="reveal">
-          <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-2.5">Conoce las diferencias</div>
-          <h2 class="text-2xl lg:text-[32px] font-extrabold text-navy tracking-tight leading-tight mb-4">Conoce las diferencias entre los programas</h2>
-        </div>
-
-        <div class="reveal mt-7 overflow-x-auto">
-          <table class="w-full border-collapse text-[13.5px] min-w-[600px]">
-            <thead>
-              <tr>
-                <th class="bg-navy text-white font-semibold px-5 py-3.5 text-left text-[13px] rounded-tl-lg w-[30%]">Criterio</th>
-                <th class="bg-navy text-white font-semibold px-5 py-3.5 text-left text-[13px]">Programa en Cloud Computing</th>
-                <th class="bg-navy text-white font-semibold px-5 py-3.5 text-left text-[13px] rounded-tr-lg">Experto en Arquitecturas Cloud</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td class="px-5 py-3 border-b border-line bg-white"><strong class="text-navy font-semibold">Nivel</strong></td><td class="px-5 py-3 border-b border-line bg-white">Inicial – medio (2+ años TI)</td><td class="px-5 py-3 border-b border-line bg-white">Avanzado (4+ años IT, 2 en Cloud)</td></tr>
-              <tr><td class="px-5 py-3 border-b border-line bg-lightbg"><strong class="text-navy font-semibold">Duración</strong></td><td class="px-5 py-3 border-b border-line bg-lightbg">16 semanas</td><td class="px-5 py-3 border-b border-line bg-lightbg">20 semanas</td></tr>
-              <tr><td class="px-5 py-3 border-b border-line bg-white"><strong class="text-navy font-semibold">Certificaciones</strong></td><td class="px-5 py-3 border-b border-line bg-white">AWS Cloud Practitioner · AZ-900</td><td class="px-5 py-3 border-b border-line bg-white">Múltiples nivel medio–alto</td></tr>
-              <tr><td class="px-5 py-3 border-b border-line bg-lightbg"><strong class="text-navy font-semibold">Salidas</strong></td><td class="px-5 py-3 border-b border-line bg-lightbg">Cloud Engineer, DevOps Jr., SRE Jr.</td><td class="px-5 py-3 border-b border-line bg-lightbg">Cloud Architect, Solutions Architect</td></tr>
-              <tr><td class="px-5 py-3 bg-white"><strong class="text-navy font-semibold">Mentoría</strong></td><td class="px-5 py-3 bg-white">1:1 semanal · 45 min</td><td class="px-5 py-3 bg-white">1:1 semanal + revisión arquitecturas</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- OUTPUT -->
-      <section class="px-6 lg:px-13 py-12 lg:py-16 border-b border-line" id="output">
-        <div class="reveal">
-          <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-2.5">Al finalizar el programa</div>
-          <h2 class="text-2xl lg:text-[32px] font-extrabold text-navy tracking-tight leading-tight mb-4">Tu output laboral garantizado</h2>
-          <p class="text-[15.5px] text-muted leading-relaxed max-w-[620px] font-light">No entregamos certificados vacíos. Entregamos evidencia concreta que acelera tu carrera y habla por sí sola en cualquier entrevista.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-8">
-          <div class="reveal border border-line rounded-xl p-7 hover:border-brand hover:-translate-y-0.5 hover:shadow-[0_10px_36px_rgba(0,87,184,.1)] transition">
-            <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-3.5 bg-blue-50">
-              <svg width="20" height="20" fill="none" stroke="#0057B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            </div>
-            <h3 class="text-[15.5px] font-bold text-navy mb-2">Proyecto final en producción</h3>
-            <p class="text-[13px] text-muted leading-relaxed">No un "todo list". Una aplicación real con tráfico real, base de datos, API y monitoreo activo en AWS.</p>
-            <ul class="mt-3.5 space-y-1">
-              <li class="text-[12.5px] text-muted flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand"></span>URL pública con uptime real</li>
-              <li class="text-[12.5px] text-muted flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand"></span>Repositorio documentado</li>
-              <li class="text-[12.5px] text-muted flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand"></span>Case study para entrevistas</li>
+      <section class="px-6 lg:px-13 py-12 lg:py-16 border-b border-line reveal" id="brecha">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div>
+            <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-2.5">El problema real</div>
+            <h2 class="text-2xl lg:text-[32px] font-extrabold text-navy tracking-tight leading-tight mb-4">La universidad no es suficiente</h2>
+            <p class="text-[15.5px] text-muted leading-relaxed mb-5 font-light">
+              Muchos jóvenes egresan con fundamentos teóricos pero dejan un vacío crítico frente a los desafíos reales. Los problemas comunes incluyen:
+            </p>
+            <ul class="space-y-3">
+              <li class="flex items-start gap-3 text-[14px] text-navy font-medium">
+                <svg class="shrink-0 mt-0.5 text-red-500" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                Falta de experiencia en entornos Cloud reales.
+              </li>
+              <li class="flex items-start gap-3 text-[14px] text-navy font-medium">
+                <svg class="shrink-0 mt-0.5 text-red-500" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                Desconocimiento en flujos de CI/CD (Docker, Pipelines).
+              </li>
+              <li class="flex items-start gap-3 text-[14px] text-navy font-medium">
+                <svg class="shrink-0 mt-0.5 text-red-500" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                Portafolios con proyectos locales, sin usuarios ni métricas.
+              </li>
             </ul>
           </div>
-
-          <div class="reveal border border-line rounded-xl p-7 hover:border-brand hover:-translate-y-0.5 hover:shadow-[0_10px_36px_rgba(0,87,184,.1)] transition">
-            <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-3.5 bg-emerald-50">
-              <svg width="20" height="20" fill="none" stroke="#00A89D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            </div>
-            <h3 class="text-[15.5px] font-bold text-navy mb-2">Mentoría de senior directo</h3>
-            <p class="text-[13px] text-muted leading-relaxed">Sesiones 1:1 semanales con engineers de Amazon, Globant o empresas top tier. Code review y feedback real.</p>
-            <ul class="mt-3.5 space-y-1">
-              <li class="text-[12.5px] text-muted flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-teal"></span>45 min de sesión semanal</li>
-              <li class="text-[12.5px] text-muted flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-teal"></span>Code review en tus PRs</li>
-              <li class="text-[12.5px] text-muted flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-teal"></span>Red de contactos en industria</li>
-            </ul>
-          </div>
-
-          <div class="reveal border border-line rounded-xl p-7 hover:border-brand hover:-translate-y-0.5 hover:shadow-[0_10px_36px_rgba(0,87,184,.1)] transition">
-            <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-3.5 bg-violet-50">
-              <svg width="20" height="20" fill="none" stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-            </div>
-            <h3 class="text-[15.5px] font-bold text-navy mb-2">Inserción laboral activa</h3>
-            <p class="text-[13px] text-muted leading-relaxed">Conectamos directamente con empresas aliadas, simulamos entrevistas técnicas y acompañamos hasta la oferta.</p>
-            <ul class="mt-3.5 space-y-1">
-              <li class="text-[12.5px] text-muted flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-violet-600"></span>Bolsa de empleo exclusiva</li>
-              <li class="text-[12.5px] text-muted flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-violet-600"></span>Mock interviews técnicas</li>
-              <li class="text-[12.5px] text-muted flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-violet-600"></span>Apoyo hasta conseguir la oferta</li>
-            </ul>
+          <div class="animate-float">
+            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Código de programación" class="rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-line" />
           </div>
         </div>
       </section>
 
-      <!-- PROCESO -->
-      <section class="px-6 lg:px-13 py-12 lg:py-16 bg-lightbg border-b border-line" id="proceso">
-        <div class="reveal">
-          <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-2.5">Cómo funciona</div>
-          <h2 class="text-2xl lg:text-[32px] font-extrabold text-navy tracking-tight leading-tight mb-4">16 semanas. Sin relleno.</h2>
-          <p class="text-[15.5px] text-muted leading-relaxed max-w-[620px] font-light">Cada semana está diseñada para que avances de forma medible hacia un perfil que las empresas quieren contratar.</p>
+      <section class="px-6 lg:px-13 py-12 lg:py-16 bg-lightbg border-b border-line reveal" id="stack">
+        <div class="text-center mb-10">
+          <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-2.5">Stack Demandado</div>
+          <h2 class="text-2xl lg:text-[32px] font-extrabold text-navy tracking-tight leading-tight mb-4">Tecnología de nivel industria</h2>
+          <p class="text-[15.5px] text-muted leading-relaxed max-w-[620px] mx-auto font-light">Enseñamos herramientas que están activas en equipos de alto rendimiento hoy.</p>
         </div>
 
-        <div class="mt-8 relative pl-9">
-          <div class="absolute left-2.5 top-0 bottom-0 w-0.5 rounded" style="background:linear-gradient(180deg,#0057B8,#00A89D)"></div>
-
-          <div class="reveal relative pb-9">
-            <div class="absolute -left-[30px] top-1 w-[22px] h-[22px] rounded-full bg-brand border-[3px] border-white flex items-center justify-center" style="box-shadow:0 0 0 2px #0057B8"><span class="text-[10px] font-extrabold text-white leading-none">1</span></div>
-            <div class="text-[11px] font-bold text-brand uppercase tracking-widest mb-1">Semanas 1–2</div>
-            <h4 class="text-base font-bold text-navy mb-1.5">Onboarding &amp; Diagnóstico</h4>
-            <p class="text-[13.5px] text-muted leading-relaxed">Auditoría de tu nivel actual, configuración del entorno profesional y plan personalizado. Desde el día 1, trabajas con Git como un senior.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="group bg-white border border-line rounded-xl p-5 text-center shadow-sm hover:border-brand transition">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS" class="h-12 mx-auto mb-3" />
+            <div class="text-[13px] font-bold text-navy mb-0.5">Cloud Computing</div>
+            <div class="text-[11px] text-muted">EC2, S3, Serverless</div>
           </div>
-
-          <div class="reveal relative pb-9">
-            <div class="absolute -left-[30px] top-1 w-[22px] h-[22px] rounded-full bg-brand border-[3px] border-white flex items-center justify-center" style="box-shadow:0 0 0 2px #0057B8"><span class="text-[10px] font-extrabold text-white leading-none">2</span></div>
-            <div class="text-[11px] font-bold text-brand uppercase tracking-widest mb-1">Semanas 3–8</div>
-            <h4 class="text-base font-bold text-navy mb-1.5">Fundaciones de producción</h4>
-            <p class="text-[13.5px] text-muted leading-relaxed">Containerización, cloud, bases de datos en producción y CI/CD. Cada módulo termina con un deploy real que queda en tu portfolio.</p>
+          <div class="group bg-white border border-line rounded-xl p-5 text-center shadow-sm hover:border-brand transition">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" class="h-12 mx-auto mb-3" />
+            <div class="text-[13px] font-bold text-navy mb-0.5">Docker</div>
+            <div class="text-[11px] text-muted">Contenedores & Redes</div>
           </div>
-
-          <div class="reveal relative pb-9">
-            <div class="absolute -left-[30px] top-1 w-[22px] h-[22px] rounded-full bg-brand border-[3px] border-white flex items-center justify-center" style="box-shadow:0 0 0 2px #0057B8"><span class="text-[10px] font-extrabold text-white leading-none">3</span></div>
-            <div class="text-[11px] font-bold text-brand uppercase tracking-widest mb-1">Semanas 9–14</div>
-            <h4 class="text-base font-bold text-navy mb-1.5">Proyecto final acelerado</h4>
-            <p class="text-[13.5px] text-muted leading-relaxed">Construyes tu proyecto estrella desde cero con mentoría semanal, deadlines reales y code review profesional en cada PR.</p>
+          <div class="group bg-white border border-line rounded-xl p-5 text-center shadow-sm hover:border-brand transition">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JS" class="h-12 mx-auto mb-3" />
+            <div class="text-[13px] font-bold text-navy mb-0.5">Vanilla JS & DOM</div>
+            <div class="text-[11px] text-muted">Lógica y Fetch API</div>
           </div>
-
-          <div class="reveal relative">
-            <div class="absolute -left-[30px] top-1 w-[22px] h-[22px] rounded-full bg-teal border-[3px] border-white flex items-center justify-center" style="box-shadow:0 0 0 2px #00A89D"><span class="text-[10px] font-extrabold text-white leading-none">4</span></div>
-            <div class="text-[11px] font-bold text-brand uppercase tracking-widest mb-1">Semanas 15–16</div>
-            <h4 class="text-base font-bold text-navy mb-1.5">Demo Day &amp; Inserción</h4>
-            <p class="text-[13.5px] text-muted leading-relaxed">Presentas tu proyecto ante empresas aliadas, negocian ofertas y accedes de forma permanente a la red de egresados DevBridge.</p>
+          <div class="group bg-white border border-line rounded-xl p-5 text-center shadow-sm hover:border-brand transition">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind" class="h-12 mx-auto mb-3" />
+            <div class="text-[13px] font-bold text-navy mb-0.5">Tailwind CSS</div>
+            <div class="text-[11px] text-muted">Sistemas de Diseño</div>
           </div>
         </div>
       </section>
 
-      <!-- TESTIMONIAL -->
-      <section class="bg-lightbg px-6 lg:px-13 py-12 lg:py-16 border-b border-line">
-        <div class="reveal max-w-[680px] mx-auto">
-          <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-7 text-center">Egresados</div>
-          <div class="bg-white border border-line rounded-2xl p-9 flex flex-col sm:flex-row gap-7 items-start">
-            <div class="w-[68px] h-[68px] rounded-full shrink-0 flex items-center justify-center text-2xl font-extrabold text-white" style="background:linear-gradient(135deg,#0057B8,#00A89D)">MS</div>
-            <div>
-              <div class="font-serif text-[64px] text-brand leading-[.6] mb-3 opacity-25">"</div>
-              <p class="font-serif text-base text-navy leading-[1.7] font-normal mb-4">
-                El programa me permitió profundizar en las principales herramientas como <em class="italic">AWS y Azure</em>. Estas plataformas estaban siendo muy demandadas en mi empresa y pude cumplir con los objetivos. También destacaría el gran seguimiento de los mentores y la metodología en equipo.
-              </p>
-              <div class="text-[13px] text-muted font-medium">
-                <strong class="text-navy">Miguel Sánchez</strong> — Egresado del Programa en Cloud Computing y Business Administrator
-              </div>
-            </div>
-          </div>
+      <section class="px-6 lg:px-13 py-12 lg:py-16 border-b border-line reveal" id="proceso">
+         <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-2.5">Cómo funciona</div>
+         <h2 class="text-2xl lg:text-[32px] font-extrabold text-navy tracking-tight leading-tight mb-8">16 semanas. Sin relleno.</h2>
+         
+         <div class="relative pl-9">
+           <div class="absolute left-2.5 top-0 bottom-0 w-0.5 rounded" style="background:linear-gradient(180deg,#0057B8,#00A89D)"></div>
+           
+           <div class="relative pb-9">
+             <div class="absolute -left-[30px] top-1 w-[22px] h-[22px] rounded-full bg-brand border-[3px] border-white flex items-center justify-center shadow-md"><span class="text-[10px] font-extrabold text-white leading-none">1</span></div>
+             <h4 class="text-base font-bold text-navy mb-1.5">Onboarding & Diagnóstico</h4>
+             <p class="text-[13.5px] text-muted leading-relaxed">Auditoría de nivel y configuración del entorno profesional usando Git.</p>
+           </div>
+           
+           <div class="relative pb-9">
+             <div class="absolute -left-[30px] top-1 w-[22px] h-[22px] rounded-full bg-brand border-[3px] border-white flex items-center justify-center shadow-md"><span class="text-[10px] font-extrabold text-white leading-none">2</span></div>
+             <h4 class="text-base font-bold text-navy mb-1.5">Fundaciones de producción</h4>
+             <p class="text-[13.5px] text-muted leading-relaxed">Containerización, base de datos y despliegues (CI/CD).</p>
+           </div>
+           
+           <div class="relative">
+             <div class="absolute -left-[30px] top-1 w-[22px] h-[22px] rounded-full bg-teal border-[3px] border-white flex items-center justify-center shadow-md"><span class="text-[10px] font-extrabold text-white leading-none">3</span></div>
+             <h4 class="text-base font-bold text-navy mb-1.5">Proyecto final y Mentoría</h4>
+             <p class="text-[13.5px] text-muted leading-relaxed">Presentas tu proyecto ante empresas aliadas para acelerar tu inserción laboral.</p>
+           </div>
+         </div>
+      </section>
+
+      <section class="px-6 lg:px-13 py-12 lg:py-16 bg-lightbg border-b border-line reveal" id="red-egresados">
+        <div class="text-[11.5px] font-bold tracking-widest uppercase text-brand mb-2.5">Resultados Reales</div>
+        <h2 class="text-2xl lg:text-[32px] font-extrabold text-navy tracking-tight leading-tight mb-4">Nuestra Red de Aplicantes</h2>
+        <p class="text-[15.5px] text-muted leading-relaxed mb-8 font-light">
+          Datos cargados dinámicamente mediante <strong>JavaScript Fetch API (GET)</strong>.
+        </p>
+        
+        <div id="data-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="col-span-full text-center text-muted py-8 text-sm">Cargando datos de la red...</div>
         </div>
       </section>
 
-      <!-- CTA FINAL -->
-      <section class="relative overflow-hidden px-6 lg:px-13 py-16 lg:py-20 text-center" id="aplicar" style="background:linear-gradient(135deg,#0B1F3A 0%,#0D3B6E 100%)">
-        <div class="absolute inset-0" style="background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px"></div>
-        <div class="relative z-10">
-          <div class="reveal inline-flex items-center gap-2 bg-white/10 border border-white/15 text-white/80 text-[13px] font-semibold px-4 py-2 rounded-full mb-6 backdrop-blur-sm">
-            <svg width="12" height="12" fill="#34d399" viewBox="0 0 24 24" class="animate-pulse"><circle cx="12" cy="12" r="10"/></svg>
-            Aplicaciones abiertas · Cierra en 12 días
-          </div>
-          <h2 class="reveal text-2xl lg:text-[38px] font-extrabold text-white tracking-tight mb-3.5">¿Listo para el salto?</h2>
-          <p class="reveal text-base text-white/65 mb-8 font-light">Solo aceptamos 20 personas por cohorte. El proceso de selección es breve pero exigente.</p>
-          <a href="#" class="reveal inline-flex items-center gap-2 bg-brand hover:bg-brand-light hover:-translate-y-0.5 text-white font-bold text-sm px-7 py-3.5 rounded-md shadow-[0_4px_18px_rgba(0,87,184,.4)] transition">
-            Aplicar al programa
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <div class="reveal mt-4 text-[13px] text-white/40">Sin cuota de admisión · Respuesta garantizada en 48 h</div>
-        </div>
-      </section>
     </main>
 
-    <!-- SIDEBAR -->
-    <aside class="lg:border-l border-t lg:border-t-0 border-line bg-white pb-8 lg:shadow-[-4px_0_24px_rgba(0,0,0,.04)] z-10">
-      <div class="bg-brand text-white px-6 py-4">
-        <div class="flex items-center gap-2.5 text-[13px] font-medium py-1"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" class="shrink-0 opacity-85"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Abierta próxima convocatoria</div>
-        <div class="flex items-center gap-2.5 text-[13px] font-medium py-1 mt-1.5"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" class="shrink-0 opacity-85"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Consulta precios y opciones de pago</div>
-        <div class="flex items-center gap-2.5 text-[13px] font-medium py-1 mt-1.5"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" class="shrink-0 opacity-85"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Plazas limitadas · 20 por cohorte</div>
-      </div>
+    <aside class="lg:border-l border-t lg:border-t-0 border-line bg-white pb-8 lg:shadow-[-4px_0_24px_rgba(0,0,0,.04)] z-10" id="aplicar">
+      
+      <form id="contact-form" class="p-6">
+        <h3 class="text-lg font-bold text-navy mb-4 tracking-tight">Postula al programa</h3>
 
-      <form class="p-6">
-        <h3 class="text-lg font-bold text-navy mb-4 tracking-tight">Solicita información</h3>
+        <div id="form-alert" class="hidden mb-4 p-3 rounded-md text-sm font-medium"></div>
 
-        <select class="w-full border border-line rounded-md px-3.5 py-2.5 text-[13.5px] bg-lightbg focus:bg-white focus:border-brand outline-none mb-2.5 appearance-none transition">
-          <option value="" disabled selected>Programa que te interesa</option>
-          <option>Programa en Cloud Computing</option>
-          <option>Experto en Arquitecturas Cloud</option>
+        <label class="block text-xs font-bold text-navy mb-1">Programa de Interés</label>
+        <select id="programa" name="programa" required class="w-full border border-line rounded-md px-3.5 py-2.5 text-[13.5px] bg-lightbg focus:bg-white focus:border-brand outline-none mb-4 appearance-none transition cursor-pointer">
+          <option value="" disabled selected>Selecciona una opción</option>
+          <option value="cloud">Cloud Computing Fundamentals</option>
+          <option value="architect">Experto Arquitectura Cloud</option>
         </select>
-        <input type="text" placeholder="Nombre" class="w-full border border-line rounded-md px-3.5 py-2.5 text-[13.5px] bg-lightbg focus:bg-white focus:border-brand outline-none mb-2.5 placeholder:text-slate-400 transition" />
-        <input type="text" placeholder="Apellidos" class="w-full border border-line rounded-md px-3.5 py-2.5 text-[13.5px] bg-lightbg focus:bg-white focus:border-brand outline-none mb-2.5 placeholder:text-slate-400 transition" />
-        <input type="email" placeholder="Email profesional" class="w-full border border-line rounded-md px-3.5 py-2.5 text-[13.5px] bg-lightbg focus:bg-white focus:border-brand outline-none mb-2.5 placeholder:text-slate-400 transition" />
+        
+        <label class="block text-xs font-bold text-navy mb-1">Nombre Completo</label>
+        <input type="text" id="nombre" name="nombre" required placeholder="Ej. Josue Pacheco" class="w-full border border-line rounded-md px-3.5 py-2.5 text-[13.5px] bg-lightbg focus:bg-white focus:border-brand outline-none mb-4 transition" />
+        
+        <label class="block text-xs font-bold text-navy mb-1">Correo Electrónico</label>
+        <input type="email" id="email" name="email" required placeholder="correo@ejemplo.com" class="w-full border border-line rounded-md px-3.5 py-2.5 text-[13.5px] bg-lightbg focus:bg-white focus:border-brand outline-none mb-5 transition" />
 
-        <div class="grid grid-cols-2 gap-2.5 mb-2.5">
-          <select class="w-full border border-line rounded-md px-3.5 py-2.5 text-[13.5px] bg-lightbg focus:bg-white focus:border-brand outline-none appearance-none transition">
-            <option>Ecuador +593</option><option>España +34</option><option>México +52</option><option>Colombia +57</option>
-          </select>
-          <input type="tel" placeholder="Teléfono" class="w-full border border-line rounded-md px-3.5 py-2.5 text-[13.5px] bg-lightbg focus:bg-white focus:border-brand outline-none placeholder:text-slate-400 transition" />
-        </div>
-
-        <select class="w-full border border-line rounded-md px-3.5 py-2.5 text-[13.5px] bg-lightbg focus:bg-white focus:border-brand outline-none mb-2.5 mt-1.5 appearance-none transition">
-          <option value="" disabled selected>Nivel de estudios</option>
-          <option>Técnico / Tecnólogo</option><option>Ingeniería / Licenciatura</option><option>Máster</option><option>Otro</option>
-        </select>
-        <select class="w-full border border-line rounded-md px-3.5 py-2.5 text-[13.5px] bg-lightbg focus:bg-white focus:border-brand outline-none mb-2.5 appearance-none transition">
-          <option value="" disabled selected>Años de experiencia en TI</option>
-          <option>Menos de 1 año</option><option>1–2 años</option><option>2–4 años</option><option>Más de 4 años</option>
-        </select>
-
-        <label class="flex items-start gap-2 mb-2.5 cursor-pointer">
-          <input type="checkbox" class="mt-1 shrink-0 accent-brand" />
-          <span class="text-[11.5px] text-muted leading-snug">Deseo recibir información también por WhatsApp de DevBridge y socios educativos</span>
-        </label>
-
-        <button type="button" class="w-full bg-brand hover:bg-brand-light hover:-translate-y-px text-white text-sm font-bold uppercase tracking-wider px-4 py-3.5 rounded-md mt-1.5 shadow-[0_4px_14px_rgba(0,87,184,.3)] hover:shadow-[0_8px_22px_rgba(0,87,184,.4)] transition">SOLICITAR INFORMACIÓN</button>
-
-        <p class="text-[10.5px] text-slate-400 mt-2.5 leading-snug">
-          DevBridge tratará tus datos para atender tu solicitud de información. Consulta nuestra
-          <a href="#" class="text-brand">política de privacidad</a> y <a href="#" class="text-brand">condiciones de uso</a>.
-        </p>
+        <button type="submit" id="submit-btn" class="w-full bg-brand hover:bg-brand-light text-white text-sm font-bold uppercase tracking-wider px-4 py-3.5 rounded-md shadow-[0_4px_14px_rgba(0,87,184,.3)] hover:shadow-[0_8px_22px_rgba(0,87,184,.4)] transition flex justify-center items-center gap-2">
+          Enviar Postulación
+        </button>
       </form>
 
-      <div class="mx-6 rounded-xl p-5 text-white" style="background:linear-gradient(135deg,#0B1F3A 0%,#0D3B6E 100%)">
-        <h4 class="text-sm font-bold mb-1.5">Certificación reconocida</h4>
-        <p class="text-xs text-white/70 leading-snug">Al finalizar el programa obtendrás acceso a certificaciones cloud reconocidas internacionalmente por AWS, Microsoft Azure y Google Cloud.</p>
-        <span class="inline-block bg-white/10 border border-white/15 text-white/80 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full mt-3">Industria certificada</span>
-      </div>
-
-      <div class="px-6 pt-5 border-t border-line mt-6">
-        <div class="text-[13px] font-bold text-navy mb-3.5">Contacta sin compromiso</div>
+      <div class="px-6 pt-5 border-t border-line mt-2">
+        <div class="text-[13px] font-bold text-navy mb-3.5">Contacto directo</div>
         <div class="flex flex-col gap-2.5">
-          <a href="tel:+59342000000" class="flex items-center gap-2.5 text-ink text-[13px] font-medium">
-            <span class="w-8 h-8 rounded-full bg-brand flex items-center justify-center shrink-0"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.4 2 2 0 0 1 3.59 2.18h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l.91-.91a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
-            (+593) 4-200-0000
-          </a>
-          <a href="mailto:info@devbridge.io" class="flex items-center gap-2.5 text-ink text-[13px] font-medium">
+          <a href="#" class="flex items-center gap-2.5 text-ink text-[13px] font-medium">
             <span class="w-8 h-8 rounded-full bg-brand flex items-center justify-center shrink-0"><svg width="14" height="14" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
-            info@devbridge.io
-          </a>
-          <a href="#" class="flex items-center gap-2.5 text-brand text-[13px] font-bold">
-            <span class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0"><svg width="14" height="14" fill="none" stroke="#0057B8" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></span>
-            ¿Te llamamos?
+            info@devbridge.ec
           </a>
         </div>
       </div>
     </aside>
   </div>
 
-  <!-- FOOTER -->
-  <footer class="bg-navy text-white/55 px-6 lg:px-13 py-9 border-t border-white/10">
-    <div class="flex items-center justify-between flex-wrap gap-4">
-      <div class="text-lg font-extrabold text-white tracking-tight">Dev<span class="text-sky-300">Bridge</span></div>
-      <div class="flex gap-6 flex-wrap">
-        <a href="#" class="text-[12.5px] text-white/45 hover:text-white/80 transition-colors">Términos y condiciones</a>
-        <a href="#" class="text-[12.5px] text-white/45 hover:text-white/80 transition-colors">Política de privacidad</a>
-        <a href="#" class="text-[12.5px] text-white/45 hover:text-white/80 transition-colors">Cookies</a>
-        <a href="#" class="text-[12.5px] text-white/45 hover:text-white/80 transition-colors">Aviso legal</a>
-        <a href="#" class="text-[12.5px] text-white/45 hover:text-white/80 transition-colors">Contrato ISA</a>
-      </div>
-      <div class="flex gap-3">
-        <a href="#" aria-label="LinkedIn" class="w-[34px] h-[34px] rounded-md border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 flex items-center justify-center text-white/45 hover:text-white/80 transition"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg></a>
-        <a href="#" aria-label="X" class="w-[34px] h-[34px] rounded-md border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 flex items-center justify-center text-white/45 hover:text-white/80 transition"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.853L2.25 2.25h6.925l4.274 5.65L18.244 2.25z"/></svg></a>
-        <a href="#" aria-label="GitHub" class="w-[34px] h-[34px] rounded-md border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 flex items-center justify-center text-white/45 hover:text-white/80 transition"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
-        <a href="#" aria-label="YouTube" class="w-[34px] h-[34px] rounded-md border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 flex items-center justify-center text-white/45 hover:text-white/80 transition"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg></a>
-      </div>
-    </div>
-    <div class="mt-6 pt-5 border-t border-white/5 text-[11.5px] text-white/30 text-center">
-      © 2025 DevBridge Acceleration Program · Todos los derechos reservados
+  <footer class="bg-navy text-white/55 px-6 lg:px-13 py-8 border-t border-white/10 text-center">
+    <div class="text-lg font-extrabold text-white tracking-tight mb-2">Dev<span class="text-sky-300">Bridge</span></div>
+    <div class="text-[11.5px] text-white/40">
+      © 2026 Programa de Aceleración IT · Proyecto Universitario
     </div>
   </footer>
 
-  <!-- Scroll reveal (vanilla JS, sin librerías) -->
-  <script>
-    // Estilos iniciales reveal aplicados vía clases utilitarias dinámicas
-    document.querySelectorAll('.reveal').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(22px)';
-      el.style.transition = 'opacity .6s ease, transform .6s ease';
-    });
-    const reveal = (el) => {
-      el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    };
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); } });
-    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-    // Hero reveal inmediato
-    document.querySelectorAll('section.relative .reveal, .h-\\[440px\\] .reveal').forEach((el, i) => setTimeout(() => reveal(el), 150 + i * 90));
-
-    // Sombra nav al hacer scroll
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.style.boxShadow = window.scrollY > 10 ? '0 2px 16px rgba(0,0,0,.07)' : 'none';
-    }, { passive: true });
-  </script>
-  <script src="/src/js/file01.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
