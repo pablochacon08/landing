@@ -27,6 +27,71 @@
       },
     };
   </script>
+
+  <!-- ✅ ESTILOS CSS PERSONALIZADOS — Pegar esto antes de </head> en index.html -->
+  <style>
+  /* === Animación reveal al hacer scroll === */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* === Punto pulsante en el hero badge === */
+  .pulse-dot {
+    animation: pulse-dot 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* === Flotación suave de la imagen === */
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* === Tarjetas de aplicantes === */
+  .applicant-card {
+    animation: fadeInUp 0.5s ease forwards;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === Avatar círculo === */
+  .avatar-circle {
+    background-color: #0057B8;
+    font-size: 1.1rem;
+  }
+
+  /* === Tarjeta de confirmación === */
+  .confirmation-card {
+    animation: slideDown 0.4s ease forwards;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === Spinner animación === */
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .animate-spin {
+    animation: spin 0.8s linear infinite;
+  }
+</style>
+
 </head>
 
 <body class="font-sans text-ink bg-white antialiased overflow-x-hidden">
@@ -239,6 +304,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="./src/js/file01.js"></script>
 </body>
 </html>
