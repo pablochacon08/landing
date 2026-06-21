@@ -1,24 +1,10 @@
 "use strict";
 
 // ============================================================
-// IMPORTACIÓN Y CONFIGURACIÓN DE FIREBASE REALTIME DATABASE
+// CONFIGURACIÓN DE FIREBASE (Vía REST API para usar FETCH)
 // ============================================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBU33UbkiEE7o6QAi-d85rDN5DM5Ud4_xw",
-  authDomain: "devbridge-app.firebaseapp.com",
-  databaseURL: "https://devbridge-app-default-rtdb.firebaseio.com",
-  projectId: "devbridge-app",
-  storageBucket: "devbridge-app.firebasestorage.app",
-  messagingSenderId: "706754976219",
-  appId: "1:706754976219:web:1bdcc94360cf9e9f72effe"
-};
-
-// Inicializamos la app y la base de datos
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+// Al agregar .json al final, Firebase nos permite usar el fetch nativo.
+const FIREBASE_URL = "https://devbridge-app-default-rtdb.firebaseio.com/postulaciones.json";
 
 // ============================================================
 // 1. INTERSECTION OBSERVER — Animaciones reveal al hacer scroll
@@ -40,25 +26,26 @@ const initReveal = () => {
 };
 
 // ============================================================
-// 2. REALTIME GET — Cargar aplicantes desde Firebase
+// 2. FETCH GET — Cargar aplicantes desde Firebase
 // ============================================================
-const loadApplicants = () => {
+const loadApplicants = async () => {
   const container = document.getElementById("data-container");
   if (!container) return;
 
-  const postulacionesRef = ref(database, 'postulaciones');
-  
   const programaLabels = {
     cloud: "Cloud Computing Fundamentals",
     architect: "Experto Arquitectura Cloud",
   };
 
-  // onValue escucha los cambios en tiempo real constantemente
-  onValue(postulacionesRef, (snapshot) => {
-    const data = snapshot.val();
+  try {
+    // Uso de fetch - HTTP GET
+    const response = await fetch(FIREBASE_URL);
+    if (!response.ok) throw new Error("Error al leer la base de datos");
+    
+    const data = await response.json();
     let htmlContent = "";
 
-    if (data) {
+    if (data && data !== null) {
       // Convertimos el objeto en array y lo invertimos (los más recientes primero)
       const usersArray = Object.values(data).reverse();
 
@@ -88,18 +75,18 @@ const loadApplicants = () => {
         </div>
       `;
     }
-  }, (error) => {
+  } catch (error) {
     container.innerHTML = `
       <div class="col-span-full text-center text-red-500 py-8 text-sm">
         Error al conectar con la base de datos.
       </div>
     `;
-    console.error("Error Realtime DB:", error);
-  });
+    console.error("Error Fetch GET:", error);
+  }
 };
 
 // ============================================================
-// 3. REALTIME POST — Enviar formulario a Firebase
+// 3. FETCH POST — Enviar formulario a Firebase
 // ============================================================
 const handleFormSubmit = () => {
   const form = document.getElementById("contact-form");
@@ -131,24 +118,36 @@ const handleFormSubmit = () => {
       Enviando...
     `;
 
+    const nuevaPostulacion = {
+      nombre: nombre,
+      email: email,
+      programa: programa,
+      fecha: new Date().toISOString()
+    };
+
     try {
-      // Generamos un ID único dentro de 'postulaciones' y guardamos
-      const nuevaPostulacionRef = push(ref(database, 'postulaciones'));
-      await set(nuevaPostulacionRef, {
-        nombre: nombre,
-        email: email,
-        programa: programa,
-        fecha: new Date().toISOString()
+      // Uso de fetch - HTTP POST
+      const response = await fetch(FIREBASE_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(nuevaPostulacion)
       });
+
+      if (!response.ok) throw new Error("Fallo al guardar en Firebase");
 
       // Mostrar confirmación visual de la tarjeta verde
       showConfirmation(nombre, email, programa);
       showAlert(alertBox, "¡Postulación enviada exitosamente!", "success");
       form.reset();
 
+      // Al usar REST API, debemos volver a llamar al GET para actualizar la lista visualmente
+      loadApplicants();
+
     } catch (error) {
       showAlert(alertBox, "Ocurrió un error. Intenta nuevamente.", "error");
-      console.error("Error al guardar en Firebase:", error);
+      console.error("Error Fetch POST:", error);
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = "Enviar Postulación";
