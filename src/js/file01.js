@@ -1,6 +1,26 @@
 "use strict";
 
 // ============================================================
+// IMPORTACIÓN Y CONFIGURACIÓN DE FIREBASE REALTIME DATABASE
+// ============================================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBU33UbkiEE7o6QAi-d85rDN5DM5Ud4_xw",
+  authDomain: "devbridge-app.firebaseapp.com",
+  databaseURL: "https://devbridge-app-default-rtdb.firebaseio.com",
+  projectId: "devbridge-app",
+  storageBucket: "devbridge-app.firebasestorage.app",
+  messagingSenderId: "706754976219",
+  appId: "1:706754976219:web:1bdcc94360cf9e9f72effe"
+};
+
+// Inicializamos la app y la base de datos
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+// ============================================================
 // 1. INTERSECTION OBSERVER — Animaciones reveal al hacer scroll
 // ============================================================
 const initReveal = () => {
@@ -20,52 +40,66 @@ const initReveal = () => {
 };
 
 // ============================================================
-// 2. FETCH GET — Cargar aplicantes desde JSONPlaceholder
+// 2. REALTIME GET — Cargar aplicantes desde Firebase
 // ============================================================
-const loadApplicants = async () => {
+const loadApplicants = () => {
   const container = document.getElementById("data-container");
   if (!container) return;
 
-  try {
-    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+  const postulacionesRef = ref(database, 'postulaciones');
+  
+  const programaLabels = {
+    cloud: "Cloud Computing Fundamentals",
+    architect: "Experto Arquitectura Cloud",
+  };
 
-    if (!response.ok) throw new Error("Error al cargar datos");
+  // onValue escucha los cambios en tiempo real constantemente
+  onValue(postulacionesRef, (snapshot) => {
+    const data = snapshot.val();
+    let htmlContent = "";
 
-    const users = await response.json();
-    const topUsers = users.slice(0, 3);
+    if (data) {
+      // Convertimos el objeto en array y lo invertimos (los más recientes primero)
+      const usersArray = Object.values(data).reverse();
 
-    container.innerHTML = topUsers
-      .map(
-        (user) => `
+      usersArray.forEach((user) => {
+        htmlContent += `
         <div class="applicant-card bg-white border border-line rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
           <div class="flex items-center gap-4 mb-4">
             <div class="avatar-circle w-12 h-12 rounded-full bg-brand flex items-center justify-center text-white font-bold text-lg shrink-0">
-              ${user.name.charAt(0).toUpperCase()}
+              ${user.nombre.charAt(0).toUpperCase()}
             </div>
             <div>
-              <div class="text-[14px] font-bold text-navy">${user.name}</div>
-              <div class="text-[12px] text-muted">@${user.username}</div>
+              <div class="text-[14px] font-bold text-navy">${user.nombre}</div>
+              <div class="text-[12px] text-muted">${user.email}</div>
             </div>
           </div>
           <div class="text-[13px] text-muted">
-            Empresa: <span class="font-semibold text-navy">${user.company.name}</span>
+            Programa: <span class="font-semibold text-navy">${programaLabels[user.programa] || user.programa}</span>
           </div>
         </div>
-      `
-      )
-      .join("");
-  } catch (error) {
+      `;
+      });
+      container.innerHTML = htmlContent;
+    } else {
+      container.innerHTML = `
+        <div class="col-span-full text-center text-muted py-8 text-sm">
+          Aún no hay postulantes. ¡Sé el primero en aplicar!
+        </div>
+      `;
+    }
+  }, (error) => {
     container.innerHTML = `
       <div class="col-span-full text-center text-red-500 py-8 text-sm">
-        Error al cargar los datos. Intenta nuevamente.
+        Error al conectar con la base de datos.
       </div>
     `;
-    console.error("Error fetch GET:", error);
-  }
+    console.error("Error Realtime DB:", error);
+  });
 };
 
 // ============================================================
-// 3. FETCH POST — Enviar formulario de postulación
+// 3. REALTIME POST — Enviar formulario a Firebase
 // ============================================================
 const handleFormSubmit = () => {
   const form = document.getElementById("contact-form");
@@ -87,10 +121,10 @@ const handleFormSubmit = () => {
       return;
     }
 
-    // Estado de carga
+    // Estado de carga visual en el botón
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
-      <svg class="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
+      <svg class="animate-spin h-4 w-4 mr-2 inline" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
       </svg>
@@ -98,33 +132,23 @@ const handleFormSubmit = () => {
     `;
 
     try {
-      // FETCH POST
-      const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: `Postulación de ${nombre}`,
-          body: `Programa: ${programa} | Email: ${email}`,
-          userId: 1,
-        }),
+      // Generamos un ID único dentro de 'postulaciones' y guardamos
+      const nuevaPostulacionRef = push(ref(database, 'postulaciones'));
+      await set(nuevaPostulacionRef, {
+        nombre: nombre,
+        email: email,
+        programa: programa,
+        fecha: new Date().toISOString()
       });
 
-      if (!response.ok) throw new Error("Error en el servidor");
-
-      const data = await response.json();
-      console.log("Respuesta POST:", data);
-
-      // Mostrar confirmación con los datos ingresados
+      // Mostrar confirmación visual de la tarjeta verde
       showConfirmation(nombre, email, programa);
-      addApplicantToList(nombre, email, programa);
       showAlert(alertBox, "¡Postulación enviada exitosamente!", "success");
       form.reset();
 
     } catch (error) {
       showAlert(alertBox, "Ocurrió un error. Intenta nuevamente.", "error");
-      console.error("Error fetch POST:", error);
+      console.error("Error al guardar en Firebase:", error);
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = "Enviar Postulación";
@@ -133,7 +157,7 @@ const handleFormSubmit = () => {
 };
 
 // ============================================================
-// 4. SECCIÓN INTERACTIVA — Mostrar datos ingresados del formulario
+// 4. SECCIÓN INTERACTIVA — Mostrar tarjeta verde de confirmación
 // ============================================================
 const showConfirmation = (nombre, email, programa) => {
   const programaLabels = {
@@ -141,7 +165,6 @@ const showConfirmation = (nombre, email, programa) => {
     architect: "Experto Arquitectura Cloud",
   };
 
-  // Verificar si ya existe una tarjeta y removerla
   const existing = document.getElementById("confirmation-card");
   if (existing) existing.remove();
 
@@ -168,47 +191,13 @@ const showConfirmation = (nombre, email, programa) => {
     </div>
   `;
 
-  // Insertar la tarjeta después del formulario
   const form = document.getElementById("contact-form");
   if (form) form.after(card);
-
-  // Scroll suave hacia la tarjeta
   card.scrollIntoView({ behavior: "smooth", block: "nearest" });
 };
 
-const addApplicantToList = (nombre, email, programa) => {
-  const container = document.getElementById("data-container");
-  if (!container) return;
-
-  const programaLabels = {
-    cloud: "Cloud Computing Fundamentals",
-    architect: "Experto Arquitectura Cloud",
-  };
-
-  const newCard = document.createElement("div");
-  newCard.className =
-    "applicant-card bg-white border border-line rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow";
-
-  newCard.innerHTML = `
-    <div class="flex items-center gap-4 mb-4">
-      <div class="avatar-circle w-12 h-12 rounded-full bg-brand flex items-center justify-center text-white font-bold text-lg shrink-0">
-        ${nombre.charAt(0).toUpperCase()}
-      </div>
-      <div>
-        <div class="text-[14px] font-bold text-navy">${nombre}</div>
-        <div class="text-[12px] text-muted">${email}</div>
-      </div>
-    </div>
-    <div class="text-[13px] text-muted">
-      Programa: <span class="font-semibold text-navy">${programaLabels[programa] || programa}</span>
-    </div>
-  `;
-
-  container.prepend(newCard);
-};
-
 // ============================================================
-// 5. HELPERS — Alert y utilidades
+// 5. HELPERS — Alertas visuales
 // ============================================================
 const showAlert = (alertBox, message, type) => {
   if (!alertBox) return;
@@ -221,7 +210,6 @@ const showAlert = (alertBox, message, type) => {
   }`;
   alertBox.classList.remove("hidden");
 
-  // Auto-ocultar después de 5 segundos
   setTimeout(() => {
     alertBox.classList.add("hidden");
   }, 5000);
